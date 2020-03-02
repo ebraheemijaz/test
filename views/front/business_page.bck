@@ -1,0 +1,327 @@
+<?php
+$v = $business[0];
+?>
+<style>
+    .rating {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+    }
+    .rating > span {
+        display: inline-block;
+        position: relative;
+    }
+    .filled:before{
+        content: "\2605";
+        position: absolute;
+    }
+    .unfilled:before{
+        /*content: "\2606";*/
+        position: absolute;
+    }
+</style>
+<style type="text/css">
+
+    #share-buttons img {
+        width: 35px;
+        padding: 5px;
+        border: 0;
+        box-shadow: 0;
+        display: inline;
+    }
+
+</style>
+
+<section id="main-content">
+    <section class="wrapper">
+        <div class="row">
+            <?php $i=12; if(!empty($userAdmin) && $userAdmin[0]['id'] == $v['user_id']){ $i = 8; } ?>
+            <div class="col-lg-<?= $i ?>">
+
+                <ul class="breadcrumb">
+                    <li><a href="<?= site_url(); ?>"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#">Business Profile</a></li>
+                </ul>
+            </div>
+            <?php if(!empty($userAdmin) && $userAdmin[0]['id'] == $v['user_id']){ ?>
+                <div class="col-lg-4">
+                    <ul class="breadcrumb">
+                        <?php if($userAdmin[0]['id'] != $v['user_id']){ ?>
+                        <?php }else{ ?>
+                            <?php if(empty($page_req)){ ?>
+                                <li><a onclick="openAtt();"><i class="fa fa-check"></i> Verify Business Page</a></li>
+                            <?php }else{ ?>
+                                <li><a href="javascript:void;"><i class="fa fa-check"></i> Request Status : <?= $page_req[(count($page_req) - 1)]['status'] ?></a></li>
+                            <?php } ?>
+                                <li style="float: right !important;">
+                                    <a href="<?= site_url('home/view/edit_business'); ?>"><i class="fa fa-pencil"></i> Edit</a>
+                                </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="row">
+            <aside class="profile-nav col-lg-12">
+                <section class="panel">
+                    <div class="clearfix">
+                        <div class="col-md-2 col-sm-4" style="padding: 20px 20px">
+                            <a href="#" style="text-align: right !important;">
+                                <?php $image = empty($v['logo']) ? base_url()."/assets_f/img/business/business-default.png" : base_url()."/assets_f/img/business/".$v['logo']; ?>
+                                <?php if(!empty($v['logo'])){ ?>
+                                    <img style="width: 100px" src="<?= $image ?>" alt="">
+                                <?php }else{ ?>
+                                    <img style="width: 100px" src="<?= $image ?>" alt="">
+                                <?php } ?>
+                                <?php if(!empty($userAdmin) && $v['user_id'] == $userAdmin[0]['id']){ ?>
+                                    <div class="row"></div>
+                                    <a href="<?= site_url('home/view/edit_business'); ?>">
+                                        <i class="fa fa-pencil"></i>Upload Logo here
+                                    </a>
+                                <?php } ?>
+                            </a>
+                        </div>
+                        <div class="col-md-8 col-sm-8">
+                            <h1 style="font-weight: bolder;">
+                                <?php if(!empty($v['title'])){ ?>
+                                    <?= ucfirst($v['title']); ?>
+                                <?php } ?>
+                                <?php if(!empty($userAdmin) && $userAdmin[0]['id'] == $v['user_id'] && empty($v['title'])){ ?>
+                                    <div class="row"></div>
+                                    <a href="<?= site_url('home/view/edit_business'); ?>">
+                                        <i class="fa fa-pencil"></i>Your Company Name
+                                    </a>
+                                <?php } ?>
+                            </h1>
+                            <?php if(!empty($v['website'])){ ?>
+                                <p><a style="border:none !important;" target="_blank" href="<?= $v['website'] ?>"><?= $v['website'] ?></a></p>
+                            <?php } ?>
+                            <?php if(!empty($userAdmin) && $userAdmin[0]['id'] == $v['user_id'] && empty($v['website'])){ ?>
+                                <div class="row"></div>
+                                <a href="<?= site_url('home/view/edit_business'); ?>">
+                                    <i class="fa fa-pencil"></i>Edit Website info
+                                </a>
+                            <?php } ?>
+
+                        </div>
+                    </div>
+                </section>
+            </aside>
+            <aside class="profile-info col-lg-12">
+
+                <section>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel-group m-bot20" id="accordion">
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseabout">
+                                            About Us
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseabout" class="">
+                                    <div class="panel-body">
+
+                                        <?php if(!empty($v['about'])){ ?>
+                                            <?= $v['about'] ?>
+                                        <?php } ?>
+                                        <?php if(!empty($userAdmin) && $userAdmin[0]['id'] == $v['user_id'] && empty($v['about'])){ ?>
+                                            <div class="row"></div>
+                                            <a href="<?= site_url('home/view/edit_business'); ?>">
+                                                <i class="fa fa-pencil"></i>Edit Personal info
+                                            </a>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                            Product & Services
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="">
+                                    <div class="panel-body">
+
+                                        <?php if(!empty($userAdmin)){ ?>
+                                            <?php if($userAdmin[0]['id'] != $v['user_id']){ ?>
+                                            <?php }else{ ?>
+                                                <a href="<?= site_url('home/view/business_images'); ?>">
+                                                    <span class="btn btn-info"><i class="fa fa-plus"></i> Images</span>
+                                                </a>
+                                            <?php } ?>
+                                        <?php } ?>
+                                        <p>
+                                            <?php
+                                            if($v['images'] != ""){ ?>
+                                                <?php $img = explode("|",$v['images']); ?>
+                                                <div id="owl-example" class="owl-carousel owl-theme">
+                                                <?php foreach($img as $val){ ?>
+                                                    <div class="item">
+                                                        <img src="<?= base_url("assets_f/img/business") ?>/<?= $val ?>" alt=""/>
+                                                    </div>
+                                                <?php } ?>
+                                                </div>
+                                            <?php } ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                            Contact Us!
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="">
+                                    <div class="panel-body">
+                                        <form action="<?= site_url('home/contactUsBusiness'."/".$v['user_id']); ?>" class="form-horizontal">
+                                            <?php $name=(isset($userAdmin)) ? $userAdmin[0]['fname']." ".$userAdmin[0]['lname'] : ""; ?>
+                                            <div class="col-md-2">
+                                                <label for="">Name</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" value="<?= $name ?>" placeholder="Enter Your Name" name="name"/>
+                                                </div>
+                                            </div>
+                                            <div class="row"></div>
+                                            <?php $name=(isset($userAdmin)) ? $userAdmin[0]['email']: ""; ?>
+                                            <div class="col-md-2">
+                                                <label for="">Name</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" value="<?= $name ?>" placeholder="Enter Your Name" name="email"/>
+                                                </div>
+                                            </div>
+                                            <div class="row"></div>
+                                            <div class="col-md-2">
+                                                <label for="">Message</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <textarea name="msg" class="form-control" id="" cols="30" rows="4"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row"></div>
+                                            <div class="col-md-2">
+
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <button class="btn btn-info">Send</button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                            Share
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="">
+                                    <div class="panel-body">
+                                        <p >
+                                        <div id="share-buttons">
+                                            <!-- Email -->
+                                            <a href="mailto:?Subject=Membership Management System&amp;Body=%20 <?= site_url("business")."/".$v['user_id']; ?>">
+                                                <img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" />
+                                            </a>
+                                            <!-- Facebook -->
+                                            <a href="http://www.facebook.com/sharer.php?u=<?= site_url("business")."/".$v['user_id']; ?>" target="_blank">
+                                                <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+                                            </a>
+                                            <!-- Google+ -->
+                                            <a href="https://plus.google.com/share?url=<?= site_url("business")."/".$v['user_id']; ?>" target="_blank">
+                                                <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
+                                            </a>
+                                            <!-- LinkedIn -->
+                                            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=<?= site_url("business")."/".$v['user_id']; ?>" target="_blank">
+                                                <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
+                                            </a>
+                                            <!-- Reddit -->
+                                            <a href="http://reddit.com/submit?url=<?= site_url("business")."/".$v['user_id']; ?>&amp;title=Membership Management System" target="_blank">
+                                                <img src="https://simplesharebuttons.com/images/somacro/reddit.png" alt="Reddit" />
+                                            </a>
+                                            <!-- StumbleUpon-->
+                                            <a href="http://www.stumbleupon.com/submit?url=<?= site_url("business")."/".$v['user_id']; ?>&amp;title=Membership Management System" target="_blank">
+                                                <img src="https://simplesharebuttons.com/images/somacro/stumbleupon.png" alt="StumbleUpon" />
+                                            </a>
+                                            <!-- Tumblr-->
+                                            <a href="http://www.tumblr.com/share/link?url=<?= site_url("business")."/".$v['user_id']; ?>&amp;title=Membership Management System" target="_blank">
+                                                <img src="https://simplesharebuttons.com/images/somacro/tumblr.png" alt="Tumblr" />
+                                            </a>
+                                            <!-- Twitter -->
+                                            <a href="https://twitter.com/share?url=<?= site_url("business")."/".$v['user_id']; ?>&amp;text=Membership Management System&amp;hashtags=MembershipManagementSystem" target="_blank">
+                                                <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+                                            </a>
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </section>
+</section>
+<div style="padding-right: 16px;" class="modal fade bs-example-modal-md in" role="dialog" tabindex="-1" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 style="text-align: center" class="modal-title" id="mySmallModalLabel">Verify your business page</h4>
+            </div>
+            <div class="modal-body">
+                <?= form_open("home/reqPageVerify"); ?>
+                    <p>What is your business category?</p>
+                    <input type="text" name="q1" class="form-control" />
+                    <p>Are you the sole owner of the business? If not, enter more information about other partners</p>
+                    <input type="text" name="q2"  class="form-control" />
+                    <p>When did you start trading?</p>
+                    <input type="text" name="q3" class="form-control" />
+                    <p>Do you have any criminal conviction against you? If yes please explain</p>
+                    <input type="text" name="q4" class="form-control" />
+                    <p>Provide best possible business contact number and email for us to reach you</p>
+                    <input type="text" name="q5" class="form-control" />
+                    <br/>
+                    <button type="submit">Send Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function openAtt(){
+        $(".bs-example-modal-md").modal('toggle');
+    }
+</script>
+<script>
+    $(document).ready(function(){
+        $("#main-content").css("margin-left","0px");
+        $("#container").addClass("sidebar-closed");
+//        alert(1);
+    });
+$("#owl-example").owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true
+});
+</script>
